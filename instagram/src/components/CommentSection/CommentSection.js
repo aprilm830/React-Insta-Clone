@@ -49,8 +49,33 @@ class CommentSection extends Component
     {
         return (
             <div className="CommentSection">
-                
+                <div className="CommentSection__list">
+                    {this.state.comments.map( ( comment, index ) =>
+                    {
+                        return (
+                            <div className="CommentSection__comment" key={index}>
+                                <h3 className="CommentSection__comment-username">{comment.username}</h3>
+                                <p className="CommentSection__comment-body">{comment.text}</p>
+                            </div>
+                        );
+                    
+                        
+                    })}
+                </div>
+                {this.props.children}
+
+                <div className="CommentSection__add">
+                    <input
+                        className="CommentSection__addField"
+                        type="text"
+                        value={this.state.newCommentText}
+                        onChange={this.updateNewComment}
+                        onKeyDown={this.SubmitNewComment}
+                        placeholder='Add a comment...'
+                    ></input>
+                </div>
             </div>
         )
     }
 }
+export default CommentSection;
