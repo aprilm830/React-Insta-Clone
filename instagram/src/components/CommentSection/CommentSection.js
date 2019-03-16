@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-
+//this is one life cycle
 class CommentSection extends Component
 {
     
@@ -12,10 +12,10 @@ class CommentSection extends Component
         this.state = {
             username: "ivan",
             comments: [],
-            newCommentText:""
+            newCommentText:''
         }
     }
-//This is one of the life cycles. this fire before the code
+//This is another of the life cycles. this fire before the code
     componentDidMount()
     {
         this.setState( {
@@ -24,58 +24,41 @@ class CommentSection extends Component
         } );
         
     }
-    submitNewComment = ( event ) =>
+    addComment = ( e ) =>
     {
-        if ( event.keyCode === 13 )
-        {
-            const newComment = {
-                username: this.state.username,
-                text: this.state.newCommentText
-            }
-            this.setState( {
-                //we use spread operator to go thru  
-                comments: [ ...this.state.comments, newComment ],
-                newCommentText:""
-            })
-        }
-    }
-    updateNewComment = ( event ) =>
-    {
+        e.preventDefault();
+        const commentObj = {
+            username: 'Sean',
+            text: this.state.newComment
+        };
+
         this.setState( {
-            newCommentText: event.target.value
-        } );
-    }
+            comments: [ ...this.state.comments, commentObj ],
+            newComment: ''
+        })
+}  
+
+    handleCommentInput = ( e ) =>
+    {
+        this.setState( { newComment: e.target.value } );
+}
     render()
     {
         return (
-            <div className="CommentSection">
-                <div className="CommentSection__list">
-                    {this.state.comments.map( ( comment, index ) =>
-                    {
-                        return (
-                            <div className="CommentSection__comment" key={index}>
-                                <h3 className="CommentSection__comment-username">{comment.username}</h3>
-                                <p className="CommentSection__comment-body">{comment.text}</p>
-                            </div>
-                        );
-                    
-                        
-                    })}
-                </div>
-                {this.props.children}
-
-                <div className="CommentSection__add">
-                    <input
-                        className="CommentSection__addField"
-                        type="text"
-                        value={this.state.newCommentText}
-                        onChange={this.updateNewComment}
-                        onKeyDown={this.SubmitNewComment}
-                        placeholder='Add a comment...'
-                    ></input>
+            <div className="Comment-Section">
+                {this.state.comments ? this.state.comments.map( ( comment, i ) => (
+                    <div className="comment" key={i}>
+                        <div className="comment-user"><b>{comment.username}</b></div>
+                        <div className="comment-text">{comment.text}</div>
+                    </div> )
+                ) : null}
+                <div className="comment-input">
+                    <input type="text" placeholder="..." value={this.state.newComment} onChange={this.handleCommentInput} />
+                    <button type="submit" onClick={this.addComment}>Submit</button>
                 </div>
             </div>
-        )
+        );
     }
 }
+
 export default CommentSection;
